@@ -6,7 +6,6 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_ttf.h>
 
-//constants
 const char NAME[] = "Snake";
 const int WIDTH = 360, HEIGHT = 640;
 const int SQUARE_SIZE = 20;
@@ -47,9 +46,7 @@ typedef struct {
     int velocity;
 } SnakeVector;
 
-//function declarations
-void render_square(RenderSquareParams p);
-void call_render_square(SDL_Renderer *_renderer, RenderSquareParams overrides);
+void render_square(SDL_Renderer *_renderer, RenderSquareParams overrides);
 void render_grid(SDL_Renderer *renderer);
 void render_text(SDL_Renderer *renderer, TTF_Font *font, const char* text, int x, int y, SDL_Color color);
 void render_pause_screen(SDL_Renderer *renderer, TTF_Font *font);
@@ -219,11 +216,11 @@ int main(int argc, char *argv[]) {
 
         //render snake
         for (int i = 0; i < snake_length; i++) {
-            call_render_square(renderer, (RenderSquareParams){.x=snake_body[i].x, .y=snake_body[i].y, .color=colors[2]});
+            render_square(renderer, (RenderSquareParams){.x=snake_body[i].x, .y=snake_body[i].y, .color=colors[2]});
         }
 
         //render apple
-        call_render_square(renderer, (RenderSquareParams){.x=apple_x_position, .y=apple_y_position, .color=colors[3]});
+        render_square(renderer, (RenderSquareParams){.x=apple_x_position, .y=apple_y_position, .color=colors[3]});
 
         //render score text
         render_text(renderer, font, score_text, SCORE_DISPLAY_POSITION[0], SCORE_DISPLAY_POSITION[1], colors[1]);
@@ -247,20 +244,7 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-void render_square(RenderSquareParams p) {
-    SDL_FRect square_rect = {p.x, p.y, p.width, p.height};
-    SDL_SetRenderDrawColor(p.renderer, p.color.r, p.color.g, p.color.b, p.color.a);
-
-    //filled meaning the square will be colored in
-    if (p.filled) { 
-        SDL_RenderFillRect(p.renderer, &square_rect);
-    }
-    else {
-        SDL_RenderRect(p.renderer, &square_rect);
-    }
-}
-
-void call_render_square(SDL_Renderer *renderer, RenderSquareParams overrides) {
+void render_square(SDL_Renderer *renderer, RenderSquareParams overrides) {
     RenderSquareParams p = {
         .x=DEFAULT_POSITION,
         .y=DEFAULT_POSITION,
@@ -278,7 +262,16 @@ void call_render_square(SDL_Renderer *renderer, RenderSquareParams overrides) {
     p.color = overrides.color;
     if (overrides.filled) p.filled = overrides.filled;
 
-    render_square(p);
+    SDL_FRect square_rect = {p.x, p.y, p.width, p.height};
+    SDL_SetRenderDrawColor(p.renderer, p.color.r, p.color.g, p.color.b, p.color.a);
+
+    //filled meaning the square will be colored in
+    if (p.filled) { 
+        SDL_RenderFillRect(p.renderer, &square_rect);
+    }
+    else {
+        SDL_RenderRect(p.renderer, &square_rect);
+    }
 }
 
 void render_text(SDL_Renderer *renderer, TTF_Font *font, const char* text, int x, int y, SDL_Color color) {
@@ -298,16 +291,20 @@ void render_text(SDL_Renderer *renderer, TTF_Font *font, const char* text, int x
 
 void render_pause_screen(SDL_Renderer *renderer, TTF_Font *font) {
     //render background
-    call_render_square(renderer, (RenderSquareParams){.width=WIDTH, .height=HEIGHT, .color=colors[4]});
+    render_square(renderer, (RenderSquareParams){.width=WIDTH, .height=HEIGHT, .color=colors[4]});
     //render "Paused" text
     render_text(renderer, font, "PAUSED", OBJECT_CENTER[0], OBJECT_CENTER[1], colors[3]);
+    
+    //more stuff adding soon!!!!!!
 }
 
 void render_game_over_screen(SDL_Renderer *renderer, TTF_Font *font) {
     //render background
-    call_render_square(renderer, (RenderSquareParams){.width=WIDTH, .height=HEIGHT, .color=colors[4]});
+    render_square(renderer, (RenderSquareParams){.width=WIDTH, .height=HEIGHT, .color=colors[4]});
     //render "Game Over" text
     render_text(renderer, font, "GAME OVER", OBJECT_CENTER[0], OBJECT_CENTER[1], colors[3]);
+
+    //more stuff adding soon!!!!!
 }
 
 int* generate_apple_position(int *x, int *y) {
