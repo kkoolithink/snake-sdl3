@@ -12,7 +12,7 @@
 
 <h2>Bugs</h2>
 
-<p>The apple has the possibility to spawn inside the player's body. Late in the game it would make getting the apple near impossible. The pause and game over text are not centeyou exit the red. Keyboard input can be unresponsive at some points (this is technically SDL3's fault). While moving in a direction, if you then move in a different direction and then move the direction opposite of the first direction you were facing in quick succession, you collide with yourself, dying (you can't die from this when the snake length is 1).</p>
+<p>The apple has the possibility to spawn inside the player's body. Late in the game it would make getting the apple near impossible. The pause and game over text are not centered. Keyboard input can be unresponsive at some points (this is technically SDL3's fault). While moving in a direction, if you then move in a different direction and then move the direction opposite of the first direction you were facing in quick succession, you collide with yourself, dying (you can't die from this when the snake length is 1).</p>
 
 <h2>Other Information</h2>
 
